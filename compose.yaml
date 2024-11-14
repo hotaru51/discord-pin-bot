@@ -1,0 +1,6 @@
+services:
+  bot:
+    image: discord-pin-bot:latest
+    build: .
+    env_file: .env
+    restart: always
