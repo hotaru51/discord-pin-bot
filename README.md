@@ -34,7 +34,7 @@ docker compose up -d
 pipenv (開発時のみ)
 
 ```sh
-cd app/
+cd bot/
 pipenv install
 
 # 必要に応じて仮想環境をactivate
