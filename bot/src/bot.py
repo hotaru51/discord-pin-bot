@@ -13,6 +13,8 @@ class PinBot(discord.Client):
     """メッセージに特定のリアクションがついたものをピン留めするBotクラス
     """
 
+    TARGET_REACTION = 'pin_dome'
+
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
         """メッセージにリアクションが付いた時に実行される
 
@@ -20,7 +22,15 @@ class PinBot(discord.Client):
             payload (discord.RawReactionActionEvent): リアクション追加時のイベント
         """
 
-        logger.info(str(payload))
+        logger.info(payload)
+
+        if payload.emoji.name != self.TARGET_REACTION:
+            logger.info('do nothing.')
+            return
+
+        state = PinState(payload, self)
+        await state.fetch()
+        logger.info(state)
 
     async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
         """メッセージのリアクションが削除された時に実行される
@@ -29,7 +39,17 @@ class PinBot(discord.Client):
             payload (discord.RawReactionClearEvent): リアクション削除時のイベント
         """
 
-        logger.info(str(payload))
+        logger.info(payload)
+
+        if payload.emoji.name != self.TARGET_REACTION:
+            logger.info('do nothing.')
+            return
+
+        state = PinState(payload, self)
+        await state.fetch()
+        logger.info(state)
+
+
 class PinState():
     """メッセージのリアクションイベントからピン留めの状態を取得、操作するクラス
 
