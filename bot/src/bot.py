@@ -21,7 +21,7 @@ class PinBot(discord.Client):
 
         logger.info(str(payload))
 
-    async def on_raw_reaction_remove(self, payload: discord.RawReactionClearEvent):
+    async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
         """メッセージのリアクションが削除された時に実行される
 
         Args:
