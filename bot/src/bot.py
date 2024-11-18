@@ -58,7 +58,7 @@ class PinState():
         event (discord.RawReactionActionEvent): リアクション追加/削除時のイベント
         reaction (str): 追加/削除されたリアクションのemoji名
         message (Optional[discord.Message]): 対象のメッセージ fetch実行前はNone
-        existing_reactions (list[str]): イベント発生後のメッセージのリアクション一覧 fetch実行前はNone
+        existing_reactions (list[str]): イベント発生後のメッセージのリアクション一覧 fetch実行前は空のリスト
     """
 
     def __init__(self, event: discord.RawReactionActionEvent, client: PinBot):
@@ -110,6 +110,7 @@ class PinState():
     def __str__(self) -> str:
         """ステータスを文字列にJSON整形して返す
         """
+
         res = {
             'event_type': self.event.event_type,
             'reaction': self.reaction,
