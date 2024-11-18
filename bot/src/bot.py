@@ -110,6 +110,7 @@ class PinState():
     def __str__(self) -> str:
         """ステータスを文字列にJSON整形して返す
         """
+
         res = {
             'event_type': self.event.event_type,
             'reaction': self.reaction,
