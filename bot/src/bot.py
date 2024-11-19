@@ -8,12 +8,12 @@ import discord
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+TARGET_REACTION = 'pin_dome'
+
 
 class PinBot(discord.Client):
     """メッセージに特定のリアクションがついたものをピン留めするBotクラス
     """
-
-    TARGET_REACTION = 'pin_dome'
 
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
         """メッセージにリアクションが付いた時に実行される
@@ -24,7 +24,7 @@ class PinBot(discord.Client):
 
         logger.info(payload)
 
-        if payload.emoji.name != self.TARGET_REACTION:
+        if payload.emoji.name != TARGET_REACTION:
             logger.info('do nothing.')
             return
 
@@ -41,7 +41,7 @@ class PinBot(discord.Client):
 
         logger.info(payload)
 
-        if payload.emoji.name != self.TARGET_REACTION:
+        if payload.emoji.name != TARGET_REACTION:
             logger.info('do nothing.')
             return
 
