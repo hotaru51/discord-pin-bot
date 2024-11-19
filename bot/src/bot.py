@@ -12,8 +12,7 @@ TARGET_REACTION = 'pin_dome'
 
 
 class PinBot(discord.Client):
-    """メッセージに特定のリアクションがついたものをピン留めするBotクラス
-    """
+    """メッセージに特定のリアクションがついたものをピン留めするBotクラス"""
 
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
         """メッセージにリアクションが付いた時に実行される
@@ -76,8 +75,7 @@ class PinState():
         self.existing_reactions: list[str] = []
 
     async def fetch(self):
-        """対象メッセージのデータを取得する
-        """
+        """対象メッセージのデータを取得する"""
 
         channel_id = self.event.channel_id
         message_id = self.event.message_id
@@ -108,8 +106,7 @@ class PinState():
         return self.message.pinned
 
     def __str__(self) -> str:
-        """ステータスを文字列にJSON整形して返す
-        """
+        """ステータスを文字列にJSON整形して返す"""
 
         res = {
             'event_type': self.event.event_type,
