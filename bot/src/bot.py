@@ -31,6 +31,11 @@ class PinBot(discord.Client):
         await state.fetch()
         logger.info(state)
 
+        if not state.is_pinned():
+            await state.pin()
+        else:
+            logger.info('already pinned.')
+
     async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
         """メッセージのリアクションが削除された時に実行される
 
@@ -104,6 +109,13 @@ class PinState():
             return False
 
         return self.message.pinned
+
+    async def pin(self):
+        """メッセージをピン留めする"""
+
+        if self.message is not None:
+            logger.info('pin message. (message_id: {})'.format(self.message.id))
+            await self.message.pin()
 
     def __str__(self) -> str:
         """ステータスを文字列にJSON整形して返す"""
