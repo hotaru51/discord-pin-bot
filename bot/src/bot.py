@@ -8,12 +8,11 @@ import discord
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+TARGET_REACTION = 'pin_dome'
+
 
 class PinBot(discord.Client):
-    """メッセージに特定のリアクションがついたものをピン留めするBotクラス
-    """
-
-    TARGET_REACTION = 'pin_dome'
+    """メッセージに特定のリアクションがついたものをピン留めするBotクラス"""
 
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
         """メッセージにリアクションが付いた時に実行される
@@ -24,13 +23,18 @@ class PinBot(discord.Client):
 
         logger.info(payload)
 
-        if payload.emoji.name != self.TARGET_REACTION:
+        if payload.emoji.name != TARGET_REACTION:
             logger.info('do nothing.')
             return
 
         state = PinState(payload, self)
         await state.fetch()
         logger.info(state)
+
+        if not state.is_pinned():
+            await state.pin()
+        else:
+            logger.info('already pinned.')
 
     async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
         """メッセージのリアクションが削除された時に実行される
@@ -41,7 +45,7 @@ class PinBot(discord.Client):
 
         logger.info(payload)
 
-        if payload.emoji.name != self.TARGET_REACTION:
+        if payload.emoji.name != TARGET_REACTION:
             logger.info('do nothing.')
             return
 
@@ -76,8 +80,7 @@ class PinState():
         self.existing_reactions: list[str] = []
 
     async def fetch(self):
-        """対象メッセージのデータを取得する
-        """
+        """対象メッセージのデータを取得する"""
 
         channel_id = self.event.channel_id
         message_id = self.event.message_id
@@ -107,9 +110,15 @@ class PinState():
 
         return self.message.pinned
 
+    async def pin(self):
+        """メッセージをピン留めする"""
+
+        if self.message is not None:
+            logger.info('pin message. (message_id: {})'.format(self.message.id))
+            await self.message.pin()
+
     def __str__(self) -> str:
-        """ステータスを文字列にJSON整形して返す
-        """
+        """ステータスを文字列にJSON整形して返す"""
 
         res = {
             'event_type': self.event.event_type,
