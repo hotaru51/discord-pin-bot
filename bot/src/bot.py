@@ -58,6 +58,9 @@ class PinBot(discord.Client):
         else:
             logger.info('not pinned.')
 
+        if TARGET_REACTION in state.existing_reactions:
+            await state.clear_reaction()
+
 
 class PinState():
     """メッセージのリアクションイベントからピン留めの状態を取得、操作するクラス
@@ -128,6 +131,13 @@ class PinState():
         if self.message is not None:
             logger.info('unpin message. (message_id: {})'.format(self.message.id))
             await self.message.unpin()
+
+    async def clear_reaction(self):
+        """リアクションを削除する"""
+
+        if self.message is not None:
+            logger.info('clear target reactions.')
+            await self.message.clear_reaction(TARGET_REACTION)
 
     def __str__(self) -> str:
         """ステータスを文字列にJSON整形して返す"""
