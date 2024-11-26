@@ -137,7 +137,7 @@ class PinState():
 
         if self.message is not None:
             logger.info('clear target reactions.')
-            await self.message.clear_reaction(TARGET_REACTION)
+            await self.message.clear_reaction(self.event.emoji)
 
     def __str__(self) -> str:
         """ステータスを文字列にJSON整形して返す"""
