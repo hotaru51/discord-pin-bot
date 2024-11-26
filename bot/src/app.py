@@ -20,7 +20,7 @@ def handler(client: bot.PinBot, signal, frame):
         frame: フレームオブジェクト
     """
 
-    asyncio.get_event_loop().create_task(client.close())
+    asyncio.create_task(client.close())
 
 
 logging.basicConfig()
